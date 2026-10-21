@@ -45,7 +45,7 @@ export type Cmd =
  *   @effect funds=+500 reputation=+10 bond=+5
  *   asagi: 台词             角色台词（角色 ID 加半角冒号）
  *   me: 台词                主角台词
- *   [学生A] 台词            路人台词
+ *   [学生] 台词             路人台词
  *   其他文字                旁白
  *   @choice                 选项开始，后面紧跟若干选项：
  *   > 选项文字 | bond=+5    选项（| 后面可写效果）

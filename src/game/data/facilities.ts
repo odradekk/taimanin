@@ -27,7 +27,7 @@ export const intelMaxRank = (lv: number) => Math.min(5, 1 + lv);
 
 export const FACILITIES: Record<FacilityId, FacilityDef> = {
   hall: {
-    id: "hall", name: "教学楼", desc: "学园的门面。学生越多，学费和政府拨款越多。",
+    id: "hall", name: "教学楼", desc: "学园的门面。学生越多，内务省的拨款越多。",
     upgrades: costs([[0, 0, 0], [1500, 40, 2], [3500, 80, 3], [7000, 150, 4], [12000, 250, 5]]),
     effect: (lv) => `每日资金 +${hallIncome(lv)}，声望 +${hallReputation(lv)}`,
   },
@@ -37,7 +37,7 @@ export const FACILITIES: Record<FacilityId, FacilityDef> = {
     effect: (lv) => `训练效果 ×${dojoMultiplier(lv).toFixed(2)}`,
   },
   lab: {
-    id: "lab", name: "忍术研究所", desc: "研究忍法原理的设施。建成后可进行忍术修行。",
+    id: "lab", name: "忍术研究所", desc: "研究忍术原理的设施。建成后可进行忍术修行。",
     upgrades: costs([[1000, 40, 2], [2500, 90, 3], [5000, 160, 3], [9000, 240, 4], [14000, 320, 5]]),
     effect: (lv) => (lv === 0 ? "未建成，无法进行忍术修行" : `解锁忍术修行，忍术成长 ×${labMultiplier(lv).toFixed(2)}`),
   },

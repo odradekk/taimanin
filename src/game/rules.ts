@@ -61,7 +61,7 @@ export function rosterIds(s: GameState): CharId[] {
 
 export function member(s: GameState, id: CharId): Taimanin {
   const t = s.roster[id];
-  if (!t) throw new GameError(`${CHARACTERS[id].name}还不是学园的成员`);
+  if (!t) throw new GameError(`${CHARACTERS[id].name}还不在队伍中`);
   return t;
 }
 

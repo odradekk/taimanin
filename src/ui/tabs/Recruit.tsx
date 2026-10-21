@@ -19,7 +19,7 @@ export function Recruit() {
 
   return (
     <>
-      <TabHead title="招募" sub={`提升声望和设施，邀请更多对魔忍加入学园。宿舍 ${rosterIds(g).length} / ${dormCapacity(g.facilities.dorm.level)}`} wm="募" />
+      <TabHead title="招募" sub={`提升声望和设施，邀请更多对魔忍加入你的队伍。宿舍 ${rosterIds(g).length} / ${dormCapacity(g.facilities.dorm.level)}`} wm="募" />
       <div className="tab-body rec-grid">
         {candidates.map((id) => {
           const def = CHARACTERS[id];
@@ -35,7 +35,7 @@ export function Recruit() {
                 <span className="nm">{def.name} <span className={`rarity ${def.rarity}`}>{def.rarity}</span></span>
                 <span className="chip" style={{ alignSelf: "flex-start" }}>{def.role}</span>
                 {joined ? (
-                  <div className="reqs"><span className="req ok">已加入学园</span></div>
+                  <div className="reqs"><span className="req ok">已加入队伍</span></div>
                 ) : (
                   <div className="reqs num">
                     <span className={`req ${g.resources.reputation >= req.reputation ? "ok" : "no"}`}>声望 {req.reputation}</span>
