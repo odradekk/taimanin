@@ -123,7 +123,8 @@ export function Novel({ playing }: { playing: Playing }) {
         {!state.cg && state.actors.map((a) => (
           <motion.div key={a.who}
             className={`novel-actor ${state.actors.length >= 3 ? "crowd" : ""} ${speakingChar && speakingChar !== a.who ? "dim" : ""}`}
-            style={{ left: SLOT_X[a.at] }}
+            // 居中用的 x 必须交给 motion：它写入的 transform 会覆盖 CSS 里的 translateX。
+            style={{ left: SLOT_X[a.at], x: "-50%" }}
             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} transition={{ duration: 0.45 }}>
             <img src={portraitUrl(a.who)} alt="" />
           </motion.div>

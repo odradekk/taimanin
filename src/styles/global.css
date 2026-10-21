@@ -509,7 +509,7 @@ img { display: block; -webkit-user-drag: none; }
 /* ========== 剧情播放器 ========== */
 .novel { position: absolute; inset: 0; z-index: 700; background: #000; cursor: default; }
 .novel-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
-.novel-actor { position: absolute; bottom: -170px; height: 1040px; transform: translateX(-50%); transition: filter 0.3s, left 0.4s, height 0.4s; pointer-events: none; }
+.novel-actor { position: absolute; bottom: -170px; height: 1040px; transition: filter 0.3s, left 0.4s, height 0.4s; pointer-events: none; }
 .novel-actor.crowd { height: 940px; bottom: -140px; }
 .novel-actor img { height: 100%; filter: drop-shadow(0 0 30px rgba(0, 0, 0, 0.5)); }
 .novel-actor.dim { filter: brightness(0.5) saturate(0.7); }
