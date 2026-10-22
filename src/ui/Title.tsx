@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
-import { newGame } from "../game/rules";
+import { newGame } from "../game";
 import { listSaves, readSave } from "../game/save";
 import { useStore } from "../store";
 import { cgUrl } from "./assets";

@@ -1,14 +1,5 @@
-import type { FacilityId } from "../types";
-
-export interface FacilityDef {
-  id: FacilityId;
-  name: string;
-  desc: string;
-  /** upgrades[n] 是从 n 级升到 n+1 级的花费和工期。 */
-  upgrades: { funds: number; supplies: number; days: number }[];
-  /** 某个等级下的效果说明。 */
-  effect: (level: number) => string;
-}
+import type { FacilityDef, FacilityId } from "../game/defs";
+import { LOCATE_DAYS, RANKS, RECOVERY } from "./balance";
 
 export const MAX_FACILITY_LEVEL = 5;
 
@@ -39,12 +30,13 @@ export const FACILITIES: Record<FacilityId, FacilityDef> = {
   lab: {
     id: "lab", name: "忍术研究所", desc: "研究忍术原理的设施。建成后可进行忍术修行。",
     upgrades: costs([[1000, 40, 2], [2500, 90, 3], [5000, 160, 3], [9000, 240, 4], [14000, 320, 5]]),
-    effect: (lv) => (lv === 0 ? "未建成，无法进行忍术修行" : `解锁忍术修行，忍术成长 ×${labMultiplier(lv).toFixed(2)}`),
+    effect: (lv) => (lv === 0 ? "未建成，无法进行忍术修行，成员无法晋升位阶"
+      : `解锁忍术修行，忍术成长 ×${labMultiplier(lv).toFixed(2)}；成员最高可${lv >= 5 ? "秘传" : `晋升${RANKS[lv].name}`}`),
   },
   infirmary: {
     id: "infirmary", name: "医务室", desc: "负责伤员治疗和日常调理。",
     upgrades: costs([[0, 0, 0], [1000, 40, 2], [2500, 80, 3], [5000, 150, 3], [8000, 220, 4]]),
-    effect: (lv) => `待命成员每日疲劳 -${infirmaryRecovery(lv)}${lv >= 3 ? "，伤势恢复加快" : ""}`,
+    effect: (lv) => `待命成员每日疲劳 -${infirmaryRecovery(lv)}${lv >= 3 ? "，伤势恢复加快" : ""}；恢复期成员每日堕落值 -${RECOVERY.base + RECOVERY.perInfirmary * lv}`,
   },
   dorm: {
     id: "dorm", name: "宿舍", desc: "对魔忍们的住处。房间越多，能招募的人越多。",
@@ -54,7 +46,7 @@ export const FACILITIES: Record<FacilityId, FacilityDef> = {
   intel: {
     id: "intel", name: "情报室", desc: "收集各地魔族和犯罪组织的情报，提供任务委托。",
     upgrades: costs([[1200, 30, 2], [2800, 70, 3], [5500, 140, 3], [9000, 220, 4], [14000, 300, 5]]),
-    effect: (lv) => `任务栏 ${intelBoardSize(lv)} 个，最高难度 ${"DCBAS"[intelMaxRank(lv) - 1]}，任务奖励 +${lv * 5}%`,
+    effect: (lv) => `任务栏 ${intelBoardSize(lv)} 个，最高难度 ${"DCBAS"[intelMaxRank(lv) - 1]}，任务奖励 +${lv * 5}%；定位被俘成员需要 ${Math.max(1, LOCATE_DAYS - lv)} 天`,
   },
 };
 

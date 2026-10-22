@@ -1,16 +1,14 @@
 import { motion } from "motion/react";
-import { CHARACTERS } from "../game/data/characters";
-import { FACILITIES } from "../game/data/facilities";
-import { MISSION_BY_ID } from "../game/data/missions";
-import type { DayReport } from "../game/types";
+import { CHARACTERS, type DayReport, FACILITIES, ITEM_BY_ID } from "../game";
 import { useStore } from "../store";
 import { dateOf, fmt, signed } from "./assets";
+import { missionName } from "./tabs/Missions";
 
 const RESULT = { great: "大成功", success: "成功", fail: "失败" };
 
 export function DayReportModal({ report }: { report: DayReport }) {
   const close = useStore((s) => s.closeReport);
-  const names = (ids: string[]) => ids.map((id) => CHARACTERS[id as keyof typeof CHARACTERS].name).join("、");
+  const names = (ids: string[]) => ids.map((id) => CHARACTERS[id].name).join("、");
   const net = report.income.funds - report.upkeep;
 
   return (
@@ -39,8 +37,15 @@ export function DayReportModal({ report }: { report: DayReport }) {
               {report.built.map((f) => <div key={f}>◆ {FACILITIES[f].name}升级完成</div>)}
               {report.recovered.length > 0 && <div>◆ {names(report.recovered)}伤愈归队</div>}
               {report.levelUps.length > 0 && <div className="gold">◆ {names(report.levelUps)}等级提升</div>}
+              {report.located.length > 0 && <div className="bad">◆ 情报室查到了{names(report.located)}的下落，营救任务已出现在任务栏</div>}
+              {report.corruption.filter((c) => c.level < 10).map((c) => (
+                <div key={c.id} className="bad">◆ {CHARACTERS[c.id].name}受到的侵蚀加深了（堕落等级 {c.level}）</div>
+              ))}
+              {report.fallen.length > 0 && <div className="bad">◆ {names(report.fallen)}堕落了，从此离开了五车</div>}
+              {report.cleansed.length > 0 && <div className="good">◆ {names(report.cleansed)}的侵蚀已经完全消除，可以重新出击</div>}
               {report.events.map((e, i) => <div key={i} className="muted">◇ {e}</div>)}
-              {!report.built.length && !report.recovered.length && !report.levelUps.length && !report.events.length && (
+              {!report.built.length && !report.recovered.length && !report.levelUps.length && !report.events.length
+                && !report.located.length && !report.corruption.length && !report.fallen.length && !report.cleansed.length && (
                 <div className="faint">平静的一天。</div>
               )}
             </div>
@@ -52,7 +57,7 @@ export function DayReportModal({ report }: { report: DayReport }) {
               {report.missions.map((m, i) => (
                 <div key={i} className="mresult">
                   <div className="hd">
-                    「{MISSION_BY_ID[m.templateId].name}」
+                    「{missionName(m)}」
                     <span className={`stamp ${m.result}`}>{RESULT[m.result]}</span>
                   </div>
                   <div className="log">{m.log.map((l, j) => <div key={j}>{l}</div>)}</div>
@@ -60,6 +65,7 @@ export function DayReportModal({ report }: { report: DayReport }) {
                     <span>资金 <span className={m.rewards.funds >= 0 ? "good" : "bad"}>{signed(m.rewards.funds)}</span></span>
                     <span>物资 <span className="good">{signed(m.rewards.supplies)}</span></span>
                     <span>声望 <span className={m.rewards.reputation >= 0 ? "good" : "bad"}>{signed(m.rewards.reputation)}</span></span>
+                    {Object.entries(m.materials).map(([id, n]) => <span key={id}>{ITEM_BY_ID[id].name} <span className="good">+{n}</span></span>)}
                   </div>
                 </div>
               ))}

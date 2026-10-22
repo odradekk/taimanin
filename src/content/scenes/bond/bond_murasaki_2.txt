@@ -1,0 +1,68 @@
+id: bond_murasaki_2
+title: 紫 · 黎明的道场
+kind: bond
+char: murasaki
+level: 5
+---
+@bg dojo
+黎明前，天空刚刚泛白。
+训练场的门开着，里面传来破风的声音。
+@show murasaki center
+murasaki: ……来了啊。比我想的早。
+me: 你说过，让我来看看你是怎么战斗的。
+murasaki: 那是很久以前的话了。你还记得。
+murasaki: 也好。正好让你看看新的东西。
+murasaki: 站远一点。看好了。
+@hide
+@cg cg_murasaki
+紫穿着运动外套，独自站在场地中央，摆出格斗架势。
+她的战斧靠在墙边。今天，她只用拳脚。
+一拳，一闪，再一拳。
+和以往硬接攻击的打法不同。她在躲。
+在最小的距离里侧身、后撤，然后反击。
+murasaki: 以前我从来不躲。反正伤会好，躲是浪费时间。
+murasaki: 可是那天在医务室，你问我会不会疼。
+murasaki: 除了阿莎姬大人，从来没有人这么问过我。
+murasaki: 我想了很久。
+murasaki: 我受了伤，学生们会害怕。你会皱着眉头改任务计划。
+murasaki: 阿莎姬大人……会一个人在校长室里叹气。
+murasaki: 原来我受伤，不只是我一个人的事。
+@choice
+> 所以你开始练闪避了 | bond=+8
+  me: 所以你开始练闪避了。
+  murasaki: ……哼。只是觉得这样效率更高。
+> 这样的你更强了 | bond=+12
+  me: 能躲的攻击就躲开，躲不开的再去挡。
+  me: 这样的紫，比以前更强了。
+  murasaki: ……别说得好像你很懂一样。
+  murasaki: 不过，你说得没错。
+murasaki: 站在最前面这一点，我不会改。
+murasaki: 但是，我会尽量站着回来。完好无损地。
+murasaki: 这样，才能一直站在最前面。
+@cg off
+@show murasaki right
+朝阳从窗口照进来，落在训练场的地板上。
+murasaki: {player}教官。
+me: ……第一次听你这样叫我。
+murasaki: 别得意。
+murasaki: 以前我说过，我认同你，不代表我信任你。
+murasaki: 那句话，我收回。
+murasaki: 我信任你。把背后交给你，我不担心。
+@choice
+> 我也信任你 | bond=+10
+  me: 我也一样。有你在最前面，我才能安心安排后面的人。
+  murasaki: ……哼。知道就好。
+> 我会对得起这份信任 | bond=+8
+  me: 我会对得起这份信任。
+  murasaki: 嗯。别让我后悔。
+@show asagi left
+asagi: 一大早就这么热闹啊。
+murasaki: 阿、阿莎姬大人！您什么时候来的！
+asagi: 从「我信任你」那里开始。
+murasaki: ……
+asagi: 紫，能听到你这么说，我很高兴。
+asagi: 教官，以后紫也拜托你了。
+murasaki: ……今天的事，谁都不准说出去。
+asagi: 我已经听到了哦。
+murasaki: 阿莎姬大人除外！
+紫别过脸去，用力咳了一声。阿莎姬笑得很开心。

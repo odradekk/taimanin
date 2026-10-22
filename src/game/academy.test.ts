@@ -1,10 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { FACILITIES, intelBoardSize } from "./data/facilities";
-import { MISSION_BY_ID } from "./data/missions";
 import {
-  bondLevel, dispatch, endDay, GameError, loadState, MAX_AP, newGame, recruit, recruitBlocker,
-  SAVE_VERSION, talk, train, upgrade,
-} from "./rules";
+  bondLevel, dispatch, endDay, FACILITIES, GameError, intelBoardSize, loadState, MAX_AP, MISSION_BY_ID, newGame,
+  recruit, recruitBlocker, SAVE_VERSION, talk, train, upgrade,
+} from ".";
 
 const always = (v: number) => () => v;
 
@@ -25,7 +23,7 @@ describe("训练和互动", () => {
     const r = train(s, "rinko", "physical", always(0.5));
     expect(s.ap).toBe(MAX_AP - 1);
     expect(s.resources.supplies).toBeLessThan(supplies);
-    expect(s.roster.rinko!.trained.hp).toBe(r.gains.hp);
+    expect(s.roster.rinko.trained.hp).toBe(r.gains.hp);
     expect(r.gains.hp).toBeGreaterThan(0);
     s.ap = 0;
     expect(() => train(s, "rinko", "physical", always(0.5))).toThrow(GameError);
@@ -44,10 +42,10 @@ describe("训练和互动", () => {
     expect(() => talk(s, "yukikaze", always(0.5))).not.toThrow();
   });
 
-  it("羁绊等级随羁绊值提升", () => {
+  it("羁绊等级随羁绊值提升，最高 10 级", () => {
     expect(bondLevel(0)).toBe(1);
     expect(bondLevel(60)).toBe(2);
-    expect(bondLevel(10_000)).toBe(5);
+    expect(bondLevel(10_000)).toBe(10);
   });
 });
 
@@ -58,7 +56,7 @@ describe("经营", () => {
     s.resources.reputation = 1000;
     recruit(s, "sakura");
     expect(s.roster.sakura).toBeDefined();
-    s.roster.shiranui = { ...s.roster.sakura!, id: "shiranui" };
+    s.roster.shiranui = { ...s.roster.sakura, id: "shiranui" };
     s.facilities.lab.level = 1;
     expect(recruitBlocker(s, "asuka")).toBe("宿舍已满");
   });
@@ -74,7 +72,7 @@ describe("经营", () => {
     expect(s.facilities.dorm.level).toBe(2);
   });
 
-  it("派遣的成员在任务期间不可用，结束后带回奖励", () => {
+  it("派遣的成员在任务期间不可用，成功后带回奖励和材料", () => {
     const s = newGame("测试", always(0.5));
     const offer = s.board[0];
     const m = MISSION_BY_ID[offer.templateId];
@@ -84,7 +82,8 @@ describe("经营", () => {
     for (let i = 1; i < m.days; i++) report = endDay(s, always(0));
     expect(report.missions).toHaveLength(1);
     expect(report.missions[0].result).not.toBe("fail");
-    expect(s.roster.rinko!.missionUid).toBeNull();
+    expect(Object.keys(report.missions[0].materials).length).toBeGreaterThan(0);
+    expect(s.roster.rinko.missionUid).toBeNull();
     expect(s.stats.missionsWon).toBe(1);
   });
 
@@ -103,5 +102,21 @@ describe("存档", () => {
     const s = newGame("测试", always(0.5));
     expect(loadState(JSON.parse(JSON.stringify(s)))).toEqual(s);
     expect(() => loadState({ ...s, version: SAVE_VERSION + 1 })).toThrow(GameError);
+  });
+
+  it("版本 1 的存档迁移后补上养成字段，21 级以上补上初传", () => {
+    const s = newGame("测试", always(0.5));
+    const old = JSON.parse(JSON.stringify(s));
+    old.version = 1;
+    delete old.fallen;
+    for (const t of Object.values<Record<string, unknown>>(old.roster)) {
+      for (const k of ["aptitude", "rank", "secret", "circuits", "talents", "corruption", "fallSeen", "captive"]) delete t[k];
+    }
+    old.roster.rinko.level = 35;
+    const loaded = loadState(old);
+    expect(loaded.version).toBe(SAVE_VERSION);
+    expect(loaded.fallen).toEqual([]);
+    expect(loaded.roster.rinko).toMatchObject({ aptitude: "R", rank: 1, secret: false, circuits: 0, talents: {}, corruption: 0, captive: null });
+    expect(loaded.roster.yukikaze.rank).toBe(0);
   });
 });

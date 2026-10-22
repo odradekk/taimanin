@@ -1,12 +1,4 @@
-import type { Resources } from "../types";
-
-export interface DailyEvent {
-  text: string;
-  delta?: Partial<Resources>;
-  /** 所有待命成员的疲劳变化。 */
-  fatigue?: number;
-  minDay?: number;
-}
+import type { DailyEvent } from "../game/defs";
 
 /** 每天结束时有一定概率随机发生其中一件。 */
 export const DAILY_EVENTS: DailyEvent[] = [

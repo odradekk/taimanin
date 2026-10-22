@@ -1,6 +1,6 @@
 // 剧情播放的状态机。纯函数：每次推进返回新状态和这一步产生的效果，由调用方决定是否应用效果（回想模式不应用）。
 
-import type { CharId } from "../game/types";
+import type { CharId } from "../game";
 import type { BgId, CgId, Cmd, Effect, Slot, Speaker } from "./script";
 
 type ChoiceOption = Extract<Cmd, { t: "choice" }>["options"][number];

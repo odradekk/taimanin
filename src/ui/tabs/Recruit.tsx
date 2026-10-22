@@ -1,7 +1,4 @@
-import { CHAR_ORDER, CHARACTERS } from "../../game/data/characters";
-import { dormCapacity, FACILITIES } from "../../game/data/facilities";
-import { recruit, recruitBlocker, rosterIds } from "../../game/rules";
-import type { CharId } from "../../game/types";
+import { CHAR_ORDER, CHARACTERS, type CharId, dormCapacity, FACILITIES, recruit, recruitBlocker, rosterIds } from "../../game";
 import { useStore } from "../../store";
 import { fmt, portraitUrl } from "../assets";
 import { TabHead } from "../Shell";
@@ -32,7 +29,7 @@ export function Recruit() {
               <img className="pt" src={portraitUrl(id)} alt="" />
               <div className="body">
                 <span className="tt">{def.title}</span>
-                <span className="nm">{def.name} <span className={`rarity ${def.rarity}`}>{def.rarity}</span></span>
+                <span className="nm">{def.name} <span className={`rarity ${def.aptitude}`}>{def.aptitude}</span></span>
                 <span className="chip" style={{ alignSelf: "flex-start" }}>{def.role}</span>
                 {joined ? (
                   <div className="reqs"><span className="req ok">已加入队伍</span></div>

@@ -1,26 +1,16 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import { CHARACTERS } from "../../game/data/characters";
-import { FACILITIES } from "../../game/data/facilities";
-import { MISSION_BY_ID } from "../../game/data/missions";
-import { academyRank, isAvailable, rosterIds } from "../../game/rules";
-import type { CharId, FacilityId } from "../../game/types";
+import { academyRank, CHARACTERS, type CharId, FACILITIES, type FacilityId, isAvailable, rosterIds } from "../../game";
 import { useStore } from "../../store";
 import { portraitUrl } from "../assets";
 import { canRecruitSomeone, hasNewBondScene } from "../Shell";
+import { missionName } from "./Missions";
+import { statusChip } from "./Roster";
 
 const NEXT_RANK: [number, string][] = [[50, "D"], [150, "C"], [300, "B"], [600, "A"], [1000, "S"]];
 
 export function Face({ id }: { id: CharId }) {
   return <span className="face" style={{ backgroundImage: `url(${portraitUrl(id)})` }} />;
-}
-
-function statusOf(g: NonNullable<ReturnType<typeof useStore.getState>["game"]>, id: CharId) {
-  const t = g.roster[id]!;
-  if (t.missionUid !== null) return <span className="chip violet">任务中</span>;
-  if (t.injuredDays > 0) return <span className="chip red">负伤 {t.injuredDays} 天</span>;
-  if (t.fatigue >= 60) return <span className="chip gold">疲劳</span>;
-  return <span className="chip green">待命</span>;
 }
 
 export function Home() {
@@ -65,7 +55,7 @@ export function Home() {
               <div className="home-row" key={id}>
                 <Face id={id} />
                 <span className="grow">{CHARACTERS[id].name} <span className="faint">Lv.{g.roster[id]!.level}</span></span>
-                {statusOf(g, id)}
+                {statusChip(g, id)}
               </div>
             ))}
           </div>
@@ -76,7 +66,7 @@ export function Home() {
           <div className="home-list">
             {g.active.map((a) => (
               <div className="home-row" key={a.uid}>
-                <span className="grow">「{MISSION_BY_ID[a.templateId].name}」进行中</span>
+                <span className="grow">「{missionName(a)}」进行中</span>
                 <span className="faint">还剩 {a.daysLeft} 天</span>
               </div>
             ))}

@@ -1,0 +1,51 @@
+id: bond_shiranui_1
+title: 不知火 · 母亲的背影
+kind: bond
+char: shiranui
+level: 3
+---
+@bg infirmary
+@show shiranui center
+夜里，医务室还亮着灯。不知火正在整理绷带。
+shiranui: 啊，教官。这么晚还在巡视吗？辛苦了。
+shiranui: 要不要喝杯茶？刚泡好的。
+我接过茶杯。茶很香，温度刚刚好。
+shiranui: 今天训练的时候，雪风扭到了手腕。
+shiranui: 我想帮她看看，她却说：「没事，我自己会处理。」
+shiranui: 结果，是凛子把她拉过来的。
+shiranui: 呵呵。那孩子，在我面前总是逞强呢。
+me: 雪风很在意你。
+shiranui: 是吗……我倒觉得，她更在意你。
+shiranui: 她会跟你说训练的事、任务的事。跟我却总是说不上几句。
+她把绷带卷好，放进柜子里。
+shiranui: 这些年，我几乎都在外面执行任务。
+shiranui: 雪风第一次用出雷遁的时候，我不在。
+shiranui: 她第一次出任务的时候，我也不在。
+shiranui: 等我回过神来，她已经长这么大了。
+shiranui: 我总是跟后辈们说，战场上最重要的是活着回来。
+shiranui: 可是我回来了，却不知道该怎么当她的母亲了。
+@choice
+> 从现在开始也不晚 | bond=+12
+  me: 错过的时间补不回来。但从现在开始的时间，还有很多。
+  shiranui: 从现在开始……
+  shiranui: 是呢。我好像一直只顾着看身后。
+> 雪风一直把你当目标 | bond=+8
+  me: 雪风常说，总有一天要成为比你更厉害的对魔忍。
+  shiranui: ……那孩子，在你面前这么说吗。
+  shiranui: 我还以为，她早就不想追着我跑了。
+shiranui: 谢谢你，教官。被你这么一说，心里清楚多了。
+shiranui: 我想做点什么。不是作为对魔忍，是作为母亲。
+shiranui: ……对了。那孩子小时候，最喜欢我做的炖菜。
+shiranui: 也不知道她现在还喜不喜欢。
+me: 试试看就知道了。
+shiranui: 呵呵，也是。
+shiranui: 到时候，教官也一起来吧。人多一点，那孩子才不会别扭。
+@choice
+> 我一定去 | bond=+5
+  me: 好。我一定去。
+  shiranui: 说好了哦。我会多做一些的。
+> 我负责帮厨 | bond=+5
+  me: 那我去帮忙打下手吧。
+  shiranui: 呵呵，那就拜托你削土豆了。
+shiranui: 茶凉了。我再给你倒一杯。
+窗外的夜很静。医务室里飘着淡淡的茶香。

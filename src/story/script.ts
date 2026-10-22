@@ -1,30 +1,15 @@
-import { CHARACTERS } from "../game/data/characters";
-import type { CharId } from "../game/types";
+import { CHARACTERS, type CharId, type SceneEffect } from "../game";
 
-export const BACKGROUNDS = [
-  "academy", "academy_dusk", "office", "dojo", "classroom",
-  "rooftop", "dorm", "infirmary", "city_night",
-] as const;
-export type BgId = (typeof BACKGROUNDS)[number];
-
-export const CGS = [
-  "title", "prologue", "cg_asagi", "cg_sakura", "cg_murasaki", "cg_shiranui",
-  "cg_yukikaze", "cg_rinko", "cg_asuka", "cg_kurenai",
-] as const;
-export type CgId = (typeof CGS)[number];
+/** 背景和 CG 的 ID 以 art/manifest.mjs 为准，由剧情测试检查是否存在。 */
+export type BgId = string;
+export type CgId = string;
 
 export type Slot = "left" | "center" | "right";
 
 /** 说话人：角色 ID、主角，或者只显示名字的路人。省略表示旁白。 */
 export type Speaker = { char: CharId } | { player: true } | { name: string };
 
-export interface Effect {
-  funds?: number;
-  supplies?: number;
-  reputation?: number;
-  /** 加到本剧情所属角色的羁绊值上。 */
-  bond?: number;
-}
+export type Effect = SceneEffect;
 
 export type Cmd =
   | { t: "bg"; id: BgId }
@@ -39,7 +24,7 @@ export type Cmd =
  * 剧本语法（每行一条，前后空白忽略，空行和 # 开头的行忽略）：
  *
  *   @bg office              切换背景
- *   @cg cg_asagi / @cg off  显示 / 关闭 CG
+ *   @cg cg_asagi_tea / @cg off  显示 / 关闭 CG
  *   @show asagi center      立绘登场（left / center / right，默认 center）
  *   @hide asagi / @hide     立绘退场（不写角色表示全部退场）
  *   @effect funds=+500 reputation=+10 bond=+5
@@ -78,12 +63,12 @@ function parseLine(line: string, lineNo: number): Cmd {
     const [op, ...args] = line.slice(1).split(/\s+/);
     switch (op) {
       case "bg":
-        if (!(BACKGROUNDS as readonly string[]).includes(args[0])) throw new ScriptError(`第 ${lineNo} 行：未知背景「${args[0]}」`);
-        return { t: "bg", id: args[0] as BgId };
+        if (!args[0]) throw new ScriptError(`第 ${lineNo} 行：@bg 缺少背景 ID`);
+        return { t: "bg", id: args[0] };
       case "cg":
         if (args[0] === "off") return { t: "cg", id: null };
-        if (!(CGS as readonly string[]).includes(args[0])) throw new ScriptError(`第 ${lineNo} 行：未知 CG「${args[0]}」`);
-        return { t: "cg", id: args[0] as CgId };
+        if (!args[0]) throw new ScriptError(`第 ${lineNo} 行：@cg 缺少 CG ID`);
+        return { t: "cg", id: args[0] };
       case "show": {
         const at = args[1] ?? "center";
         if (!isChar(args[0])) throw new ScriptError(`第 ${lineNo} 行：未知角色「${args[0]}」`);

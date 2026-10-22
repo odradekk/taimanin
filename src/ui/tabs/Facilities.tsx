@@ -1,5 +1,4 @@
-import { FACILITIES, FACILITY_ORDER, MAX_FACILITY_LEVEL } from "../../game/data/facilities";
-import { upgrade, upgradeBlocker } from "../../game/rules";
+import { FACILITIES, FACILITY_ORDER, MAX_FACILITY_LEVEL, upgrade, upgradeBlocker } from "../../game";
 import { useStore } from "../../store";
 import { fmt } from "../assets";
 import { TabHead } from "../Shell";

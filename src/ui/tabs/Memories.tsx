@@ -1,12 +1,15 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useMemo, useState } from "react";
-import { SCENES, sceneCommands, type SceneDef } from "../../story/scenes";
-import { CGS, type CgId, type Cmd } from "../../story/script";
+import { sceneAssets, SCENES, sceneCommands, type SceneKind } from "../../story/scenes";
+import type { CgId, Cmd } from "../../story/script";
 import { useStore } from "../../store";
 import { cgUrl } from "../assets";
 import { TabHead } from "../Shell";
 
-const KIND_NAMES: Record<SceneDef["kind"], string> = { main: "主线", recruit: "招募", bond: "羁绊" };
+const KIND_NAMES: Record<SceneKind, string> = { main: "主线", recruit: "招募", bond: "羁绊", secret: "秘传", fall: "堕落", rescue: "营救", event: "事件" };
+
+/** 鉴赏列表：标题 CG 加上剧情里出现过的全部 CG。 */
+const ALL_CGS = ["title", ...sceneAssets().cgs.filter((id) => id !== "title")];
 
 function cgsIn(cmds: Cmd[], out = new Set<CgId>()): Set<CgId> {
   for (const c of cmds) {
@@ -49,13 +52,9 @@ export function Memories() {
           </div>
         </div>
         <div className="panel mem-col">
-          <div className="section-title">CG 鉴赏 · {unlocked.size} / {CGS.length}</div>
+          <div className="section-title">CG 鉴赏 · {unlocked.size} / {ALL_CGS.length}</div>
           <div className="cg-grid scroll">
-            {CGS.map((id) => (
-              <button key={id} className="cg-thumb" disabled={!unlocked.has(id)} onClick={() => setViewing(id)}>
-                {unlocked.has(id) ? <img src={cgUrl(id)} alt="" loading="lazy" /> : <span className="lock">封</span>}
-              </button>
-            ))}
+            {ALL_CGS.map((id) => <CgThumb key={id} id={id} unlocked={unlocked.has(id)} onView={() => setViewing(id)} />)}
           </div>
         </div>
       </div>
@@ -67,5 +66,17 @@ export function Memories() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+/** CG 可以晚于剧本绘制，图片还不存在时显示「未绘制」。 */
+function CgThumb({ id, unlocked, onView }: { id: CgId; unlocked: boolean; onView: () => void }) {
+  const [missing, setMissing] = useState(false);
+  return (
+    <button className="cg-thumb" disabled={!unlocked || missing} onClick={onView}>
+      {!unlocked ? <span className="lock">封</span>
+        : missing ? <span className="lock">未绘制</span>
+        : <img src={cgUrl(id)} alt="" loading="lazy" onError={() => setMissing(true)} />}
+    </button>
   );
 }

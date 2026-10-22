@@ -1,0 +1,37 @@
+id: recruit_asagi
+title: 阿莎姬 · 校长出阵
+kind: recruit
+char: asagi
+---
+@bg office
+@show asagi center
+asagi: {player}教官，有件事想和你商量。
+asagi: 我想加入你的队伍，参加任务轮换。
+me: 校长亲自上前线？
+asagi: 我一直都在前线。只是过去总是一个人去，一个人回来。
+asagi: 现在，学园的运营交给你，我很放心。
+asagi: 教学楼扩建好了，经费也稳定了。我想试试和大家一起作战。
+@hide
+@show asagi left
+@show sakura right
+sakura: 姐姐！我都听到了哦！要上前线的话，带上我！
+asagi: 樱。偷听也要挑时候。
+sakura: 我是正大光明地站在影子里听的！
+@choice
+> 欢迎加入，校长 | bond=+5
+  me: 求之不得。欢迎加入，校长。
+  asagi: 嗯。在队伍里，我就是你手下的一名对魔忍。
+  asagi: 不用对我客气。该怎么派遣，就怎么派遣。
+> 调查第三部的事务怎么办？ | bond=+3
+  me: 校长去了前线，调查第三部的事务怎么办？
+  asagi: 能交给别人的，我都交出去了。剩下的，回来再处理。
+  sakura: 姐姐终于学会把工作分给别人了！
+asagi: 我的隼之术很快。大多数敌人，连我的影子都看不到。
+asagi: 但再快，也有赶不上的东西。
+asagi: 所以我需要同伴。需要你，还有大家。
+sakura: 说得真好听～其实是在办公室待腻了吧？
+asagi: ……樱。
+sakura: 嘿嘿，我错了～
+asagi: 从今天起，最强的对魔忍听你指挥。
+asagi: 尽管派我出去吧，教官。
+井河阿莎姬加入了队伍。

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { importSave, listSaves, readSave, SLOTS, writeSave, type SaveMeta, type SlotId } from "../game/save";
-import type { GameState } from "../game/types";
+import type { GameState } from "../game";
 import { useStore } from "../store";
 import { dateOf } from "./assets";
 

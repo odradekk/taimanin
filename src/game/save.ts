@@ -1,6 +1,6 @@
 import { get, set } from "idb-keyval";
-import { loadState } from "./rules";
-import type { GameState } from "./types";
+import { loadState } from "./state";
+import type { GameState } from "./state";
 
 export const SLOTS = ["auto", "1", "2", "3"] as const;
 export type SlotId = (typeof SLOTS)[number];

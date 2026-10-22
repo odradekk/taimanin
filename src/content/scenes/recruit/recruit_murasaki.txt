@@ -1,0 +1,42 @@
+id: recruit_murasaki
+title: 紫 · 阿莎姬大人的命令
+kind: recruit
+char: murasaki
+---
+@bg dojo
+扩建后的训练场里，器材摆得整整齐齐。
+一位女性正在逐一检查器材，动作一丝不苟。墙边靠着一柄比她还高的重型战斧。
+@show murasaki right
+murasaki: ……有事吗？没事的话我要去巡视了。
+me: 我是新来的教官。请问你是？
+murasaki: 八津紫。五车学园的教师。
+murasaki: 你的事我听说了。阿莎姬大人很忙，少拿琐事去烦她。
+me: ……我记住了。
+murasaki: 还有。阿莎姬大人命令我，加入你负责的队伍。
+murasaki: 所以我来了。仅此而已。
+me: ……看来不是自愿的。
+murasaki: 阿莎姬大人的命令，就是我的意愿。
+她拿起一根训练用的木棍，掂了掂分量。
+murasaki: 训练场的器材，比以前好多了。
+murasaki: 至少不会一碰就坏。这一点，我承认是你的功劳。
+@choice
+> 这里还能做得更好 | bond=+5
+  me: 还不够。我想让这里成为学园最好的训练场。
+  murasaki: ……哼。口气不小。那我就看着。
+> 多谢夸奖 | bond=+2
+  me: 能得到八津老师的认可，我很荣幸。
+  murasaki: 我没有夸你。只是陈述事实。
+murasaki: 先说清楚。我的忍术叫「不死觉醒」。
+murasaki: 再重的伤，我都能很快恢复。
+murasaki: 所以出任务的时候，让我站在最前面。
+murasaki: 别让那些学生替我挨刀。
+me: ……我记住了。
+@show asagi left
+asagi: 紫，又在吓唬人了？
+murasaki: 阿、阿莎姬大人！我没有……我只是在交代注意事项。
+asagi: 教官，紫的态度是冷了一点。但她比谁都可靠。
+asagi: 拜托你了。
+murasaki: ……既然阿莎姬大人这么说。
+murasaki: 我认同你的工作。但这不代表我信任你。
+murasaki: 想让我信任，就拿出结果来。
+八津紫加入了队伍。

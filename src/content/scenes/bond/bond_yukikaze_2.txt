@@ -1,0 +1,72 @@
+id: bond_yukikaze_2
+title: 雪风 · 风中的约定
+kind: bond
+char: yukikaze
+level: 5
+---
+@bg infirmary
+@show yukikaze left
+@show rinko right
+任务回来的那天晚上，医务室的灯一直亮着。
+凛子的手臂上缠着绷带。
+rinko: 只是擦伤而已。雪风，你不用一直站在这里。
+yukikaze: ……
+rinko: 教官，你也帮我劝劝她。
+那次任务里，雪风一个人冲在了最前面。
+凛子为了掩护她，手臂被敌人的刀划伤了。
+yukikaze: ……对不起。
+雪风只说了这一句，就跑出了医务室。
+@hide
+@bg rooftop
+@show yukikaze center
+天台上，雪风背对着我站着。
+yukikaze: 你又来了。
+me: 我说过，会来看你的。
+yukikaze: 那是说对练的时候吧。
+yukikaze: ……教官。我是不是很差劲。
+yukikaze: 我一直想着，不要被留下来。要跑在最前面。
+yukikaze: 结果呢。差点把凛子前辈留在那里了。
+yukikaze: 如果那把刀再偏一点……
+她的声音在发抖。
+@choice
+> 这次是你做错了 | bond=+10
+  me: 嗯。这次是你做错了。冲得太快，把同伴甩在了后面。
+  me: 但你会这么难过，说明你已经知道错在哪里了。
+  yukikaze: ……你就不能说点好听的吗。
+  yukikaze: 不过，谢谢你没有骗我。
+> 不是你一个人的错 | bond=+5
+  me: 派遣任务的是我。我也有责任。
+  yukikaze: 才不是！是我自己冲出去的……
+  yukikaze: 教官不用替我扛。
+me: 你说过，变强了就不用再等了。
+me: 可是，强不是一个人跑在最前面。
+me: 是让身边的人能放心地把后背交给你。
+yukikaze: 把后背……交给我。
+yukikaze: 凛子前辈刚才也说了差不多的话。
+yukikaze: 「下次换你来掩护我。」……她一点都没生气。
+yukikaze: 真是的。大家都太温柔了。
+她用力揉了揉眼睛，转过身去，面对着晚霞。
+@hide
+@cg cg_yukikaze
+晚霞铺满了天空。风把她的双马尾吹得高高扬起。
+yukikaze: 我决定了！
+yukikaze: 以后，我不一个人跑在最前面了。我要站在大家旁边。
+yukikaze: 谁落在后面，我就回头拉谁一把。
+yukikaze: 这样的话，就谁都不会被留下来了吧？
+她回过头，对我咧嘴一笑。
+@choice
+> 这才是雪风 | bond=+12
+  me: 嗯。这才是我认识的雪风。
+  yukikaze: 嘿嘿。那当然，我可是要成为最厉害的对魔忍的人。
+> 我会一直看着 | bond=+10
+  me: 我会一直看着。看你说到做到。
+  yukikaze: 好啊。你可要看清楚了，一眼都不准漏。
+yukikaze: 对了。第十八次对练，还没打呢。
+yukikaze: 等凛子前辈的伤好了，我要堂堂正正地赢她。
+yukikaze: 到时候，教官也要来。
+me: 一定。
+@cg off
+@show yukikaze center
+yukikaze: ……走吧。我要回医务室，再跟前辈好好道一次歉。
+yukikaze: 教官，你也一起来。一个人去……有点难为情。
+我们一起走下天台。风还在吹，但已经不冷了。

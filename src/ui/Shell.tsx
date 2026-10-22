@@ -1,8 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Fragment, type ReactNode } from "react";
-import { CHAR_ORDER } from "../game/data/characters";
-import { academyRank, bondLevel, MAX_AP, recruitBlocker, rosterIds } from "../game/rules";
-import type { GameState } from "../game/types";
+import { academyRank, bondLevel, CHAR_ORDER, type GameState, MAX_AP, recruitBlocker, rosterIds } from "../game";
 import { bondScenesOf } from "../story/scenes";
 import type { BgId } from "../story/script";
 import { useStore, type Tab } from "../store";
@@ -31,7 +29,7 @@ const TABS: { id: Tab; k: string; label: string; bg: BgId; view: () => ReactNode
 /** 有尚未观看的已解锁羁绊剧情。 */
 export function hasNewBondScene(g: GameState): boolean {
   return rosterIds(g).some((id) =>
-    bondScenesOf(id).some((s) => bondLevel(g.roster[id]!.bond) >= s.bondLevel! && !g.seenScenes.includes(s.id)));
+    bondScenesOf(id).some((s) => !g.roster[id].captive && bondLevel(g.roster[id].bond) >= s.level! && !g.seenScenes.includes(s.id)));
 }
 
 export function canRecruitSomeone(g: GameState): boolean {
@@ -66,11 +64,13 @@ function TopBar({ g }: { g: GameState }) {
 }
 
 export function Shell() {
-  const g = useStore((s) => s.game)!;
+  const g = useStore((s) => s.game);
   const tab = useStore((s) => s.tab);
   const setTab = useStore((s) => s.setTab);
   const endDay = useStore((s) => s.endDay);
   const report = useStore((s) => s.report);
+  // 返回标题时游戏画面还在播放退场动画，这时存档已经清空。
+  if (!g) return null;
   const current = TABS.find((t) => t.id === tab)!;
   const View = current.view;
   const dots: Partial<Record<Tab, boolean>> = { roster: hasNewBondScene(g), recruit: canRecruitSomeone(g) };

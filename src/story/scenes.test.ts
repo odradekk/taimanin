@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { CHARACTERS, CHAR_ORDER } from "../game/data/characters";
-import { BOND_LEVELS_WITH_SCENES, MAIN_TRIGGERS } from "../game/data/story";
-import { SCENES, sceneCommands } from "./scenes";
+import { assets } from "../../art/manifest.mjs";
+import { CHAR_ORDER, CHARACTERS, MAIN_TRIGGERS } from "../game";
+import { parseSceneFile, SCENES, sceneCommands } from "./scenes";
 import { parseScript, ScriptError, type Cmd } from "./script";
 
 function walk(cmds: Cmd[], visit: (c: Cmd) => void) {
@@ -33,27 +33,53 @@ describe("剧本语法", () => {
     expect(choice.options[1].reply).toHaveLength(0);
   });
 
-  it("拒绝未知角色、背景和效果", () => {
+  it("拒绝未知角色和效果", () => {
     expect(() => parseScript("nobody: 你好")).toThrow(ScriptError);
-    expect(() => parseScript("@bg moon")).toThrow(ScriptError);
+    expect(() => parseScript("@show nobody")).toThrow(ScriptError);
     expect(() => parseScript("@effect luck=+1")).toThrow(ScriptError);
+  });
+
+  it("剧情文件由字段头和剧本组成", () => {
+    const s = parseSceneFile("x.txt", "id: bond_x_2\ntitle: 标题\nkind: bond\nchar: asagi\nlevel: 2\n---\n旁白");
+    expect(s).toMatchObject({ id: "bond_x_2", kind: "bond", char: "asagi", level: 2, script: "旁白" });
+    expect(() => parseSceneFile("x.txt", "id: a\ntitle: b\nkind: bond\n旁白")).toThrow(/---/);
+    expect(() => parseSceneFile("x.txt", "id: a\ntitle: b\nkind: unknown\n---\n")).toThrow(/剧情类型/);
   });
 });
 
 describe("剧情内容", () => {
   const all = Object.values(SCENES);
+  const manifest = (kind: string) => new Set(assets.filter((a) => a.kind === kind).map((a) => a.id));
 
   it("所有剧本都能解析", () => {
     for (const s of all) expect(() => sceneCommands(s.id), s.id).not.toThrow();
   });
 
-  it("主线触发、招募和羁绊剧情都有对应剧本", () => {
+  it("字段符合剧情类型", () => {
+    for (const s of all) {
+      if (s.kind !== "main" && s.kind !== "event") expect(CHARACTERS[s.char!], `${s.id} 的角色`).toBeDefined();
+      if (s.kind === "bond") expect(s.level, s.id).toBeGreaterThanOrEqual(2);
+      if (s.kind === "bond") expect(s.level, s.id).toBeLessThanOrEqual(10);
+      if (s.kind === "fall") expect(s.id, s.id).toBe(`fall_${s.char}_${s.level}`);
+      if (s.kind === "rescue") expect(s.id, s.id).toBe(`rescue_${s.char}`);
+      if (s.kind === "secret") expect(["before", "after"], s.id).toContain(s.part);
+    }
+  });
+
+  it("主线触发和招募都有对应剧本", () => {
     for (const t of MAIN_TRIGGERS) expect(SCENES[t.scene], t.scene).toBeDefined();
     for (const id of CHAR_ORDER) {
       if (CHARACTERS[id].recruit) expect(SCENES[`recruit_${id}`], `recruit_${id}`).toBeDefined();
-      BOND_LEVELS_WITH_SCENES.forEach((level, i) => {
-        const s = SCENES[`bond_${id}_${i + 1}`];
-        expect(s, `bond_${id}_${i + 1}`).toMatchObject({ kind: "bond", char: id, bondLevel: level });
+    }
+  });
+
+  it("引用的背景、CG 和立绘都登记在 art/manifest.mjs", () => {
+    const [bgs, cgs, portraits] = [manifest("bg"), manifest("cg"), manifest("portrait")];
+    for (const s of all) {
+      walk(sceneCommands(s.id), (c) => {
+        if (c.t === "bg") expect(bgs.has(c.id), `${s.id} 背景 ${c.id}`).toBe(true);
+        if (c.t === "cg" && c.id) expect(cgs.has(c.id), `${s.id} CG ${c.id}`).toBe(true);
+        if (c.t === "show") expect(portraits.has(c.who), `${s.id} 立绘 ${c.who}`).toBe(true);
       });
     }
   });

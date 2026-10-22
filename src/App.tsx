@@ -1,10 +1,9 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { CHAR_ORDER } from "./game/data/characters";
-import { SCENES } from "./story/scenes";
-import { BACKGROUNDS, CGS } from "./story/script";
+import { CHAR_ORDER } from "./game";
+import { sceneAssets } from "./story/scenes";
 import { useStore } from "./store";
-import { bgUrl, cgUrl, portraitUrl } from "./ui/assets";
+import { bgUrl, portraitUrl } from "./ui/assets";
 import { Novel } from "./ui/Novel";
 import { Shell } from "./ui/Shell";
 import { Title } from "./ui/Title";
@@ -23,12 +22,10 @@ function useStageScale() {
   return scale;
 }
 
-// 图片都是 1～2MB 的 PNG，启动时预加载，避免切换页面和剧情时背景闪黑。
+// 图片都是 1～2MB 的 PNG，启动时预加载立绘和背景，避免切换页面和剧情时背景闪黑。CG 数量多，播放时再加载。
 function usePreloadAssets() {
   useEffect(() => {
-    const urls = [
-      ...CHAR_ORDER.map(portraitUrl), ...BACKGROUNDS.map(bgUrl), ...CGS.map(cgUrl),
-    ];
+    const urls = [...CHAR_ORDER.map(portraitUrl), ...sceneAssets().bgs.map(bgUrl)];
     urls.forEach((u) => { new Image().src = u; });
   }, []);
 }
@@ -41,12 +38,12 @@ export function App() {
   const playing = useStore((s) => s.playing);
   const report = useStore((s) => s.report);
   const toasts = useStore((s) => s.toasts);
-  const play = useStore((s) => s.play);
+  const playPending = useStore((s) => s.playPending);
 
-  // 日报关闭后、没有其他剧情在播时，依次播放待触发的主线剧情。
+  // 日报关闭后、没有其他剧情在播时，依次播放待触发的剧情。
   useEffect(() => {
-    if (pending && !playing && !report) play({ sceneId: pending, char: SCENES[pending]?.char, replay: false });
-  }, [pending, playing, report, play]);
+    if (pending && !playing && !report) playPending();
+  }, [pending, playing, report, playPending]);
 
   return (
     <div className="viewport">

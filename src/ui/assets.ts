@@ -1,4 +1,4 @@
-import type { CharId } from "../game/types";
+import type { CharId } from "../game";
 import type { BgId, CgId } from "../story/script";
 
 export const portraitUrl = (id: CharId) => `/assets/portraits/${id}.png`;

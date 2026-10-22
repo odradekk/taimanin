@@ -1,0 +1,45 @@
+id: recruit_shiranui
+title: 不知火 · 归来
+kind: recruit
+char: shiranui
+---
+@bg infirmary
+翻新后的医务室，药柜里还飘着新木头的味道。
+一位陌生的女性正在整理药架。
+@show shiranui right
+shiranui: 啊，你就是{player}教官吧？初次见面。
+shiranui: 我是水城不知火。雪风平时承蒙你照顾了。
+me: 雪风的……母亲？
+shiranui: 是的。这三个月我一直在外面执行任务，昨天才回到五车。
+shiranui: 一回来就听阿莎姬说，她亲自挑的教官，把学园打理得很好。
+shiranui: 医务室也翻新了。照顾伤员，我还算有些经验。
+shiranui: 所以我向阿莎姬申请，把我编进你的队伍。前线的任务也可以交给我。
+走廊里传来一阵急促的脚步声。
+@show yukikaze left
+yukikaze: 妈妈！？你怎么在这里！
+shiranui: 雪风。三个月不见，又长高了呢。
+yukikaze: 回、回来也不先说一声！我又不是在等你……
+shiranui: 嗯嗯，我知道。
+yukikaze: 教官！你早就知道了吧？
+@choice
+> 我也是刚刚才见到 | bond=+3
+  me: 我也是刚刚才见到。真的。
+  yukikaze: ……哼，那就算了。
+  shiranui: 雪风，对教官要有礼貌哦。
+> 雪风看起来很高兴 | bond=+5
+  me: 雪风，你看起来很高兴。
+  yukikaze: 才、才没有！我只是跑得太急了！
+  shiranui: 呵呵。这孩子，嘴硬心软呢。
+shiranui: 教官。这孩子有没有给你添麻烦？
+yukikaze: 我才没有添麻烦！
+me: 雪风是队里最拼命的人。我很依赖她。
+yukikaze: ……
+shiranui: 是吗。……谢谢你。
+shiranui: 那孩子，今后也请你多费心了。
+shiranui: 我的水遁之术和幻影之术，擅长扰乱敌人。
+shiranui: 年轻人在前面冲，我在后面帮忙看着就好。
+shiranui: 战场上最重要的不是赢，而是活着回来。
+shiranui: 这一点，我会和孩子们一起记住。
+shiranui: 今后请多指教，教官。
+yukikaze: ……欢迎回来，妈妈。
+水城不知火加入了队伍。

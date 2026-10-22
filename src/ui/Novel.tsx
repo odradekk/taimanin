@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CHARACTERS } from "../game/data/characters";
+import { CHARACTERS } from "../game";
 import { choose, next, skip, start, type Line, type NovelState } from "../story/engine";
 import { SCENES, sceneCommands } from "../story/scenes";
 import type { Effect, Slot } from "../story/script";
@@ -25,6 +25,17 @@ export function Novel({ playing }: { playing: Playing }) {
   const [backlog, setBacklog] = useState(false);
   const [hidden, setHidden] = useState(false);
   const initialApplied = useRef(false);
+
+  // 剧本可以先于 CG 写好，图片还没画出来时不显示 CG，保留背景和立绘。
+  const [missingCgs, setMissingCgs] = useState<Set<string>>(() => new Set());
+  const cg = state.cg && !missingCgs.has(state.cg) ? state.cg : null;
+  useEffect(() => {
+    const id = state.cg;
+    if (!id) return;
+    const img = new Image();
+    img.onerror = () => setMissingCgs((m) => new Set(m).add(id));
+    img.src = cgUrl(id);
+  }, [state.cg]);
 
   const text = (state.line?.text ?? "").replaceAll("{player}", playerName);
   const typing = shown < text.length;
@@ -120,7 +131,7 @@ export function Novel({ playing }: { playing: Playing }) {
       </AnimatePresence>
 
       <AnimatePresence>
-        {!state.cg && state.actors.map((a) => (
+        {!cg && state.actors.map((a) => (
           <motion.div key={a.who}
             className={`novel-actor ${state.actors.length >= 3 ? "crowd" : ""} ${speakingChar && speakingChar !== a.who ? "dim" : ""}`}
             // 居中用的 x 必须交给 motion：它写入的 transform 会覆盖 CSS 里的 translateX。
@@ -132,8 +143,8 @@ export function Novel({ playing }: { playing: Playing }) {
       </AnimatePresence>
 
       <AnimatePresence>
-        {state.cg && (
-          <motion.div key={state.cg} className="novel-cg" style={{ backgroundImage: `url(${cgUrl(state.cg)})` }}
+        {cg && (
+          <motion.div key={cg} className="novel-cg" style={{ backgroundImage: `url(${cgUrl(cg)})` }}
             initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.1 }} />
         )}
       </AnimatePresence>
