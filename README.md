@@ -21,10 +21,10 @@ npm test           # 规则和剧本测试
 | 路径 | 内容 |
 | --- | --- |
 | `docs/` | 世界观、术语表、角色档案和剧本稿（`lorebook/`、`stories/`），玩法设计（`design/`），代码架构（`codebase/`）。代码里的设定文本与它冲突时，以 `docs/` 为准 |
-| `src/game/rules.ts` | 全部游戏规则（训练、交谈、招募、设施、任务、结束一天） |
-| `src/game/data/` | 角色、设施、任务、礼物、随机事件、主线触发条件等数值表 |
+| `src/content/` | 内容数据：角色（每人一个文件）、物品与材料、任务、设施、训练、全局数值 `balance.ts` |
+| `src/content/scenes/` | 剧情文本文件，按类型分目录：主线、招募、羁绊、秘传、堕落、营救 |
+| `src/game/` | 规则：属性与养成、学园日常、任务、俘获与堕落、结束一天；对外接口是 `index.ts` |
 | `src/story/script.ts` | 剧本语法说明和解析器 |
-| `src/story/scenes/` | 剧本：主线（main）、招募（recruit）、羁绊（bond） |
 | `src/story/engine.ts` | 剧情播放状态机 |
 | `src/ui/` | 界面：标题、主框架、各页面、剧情播放器 |
 | `art/manifest.mjs` | 美术资源清单（画师串、尺寸、提示词、种子） |
@@ -40,4 +40,4 @@ npm run art -- rinko office  # 只生成指定的几张（文件已存在时跳�
 npm run art -- rinko --force # 覆盖重新生成
 ```
 
-所有图片共用同一组画师串和负面词，并按类型固定尺寸：立绘为 832×1216 透明背景，背景和 CG 为 1472×832。新增角色时，在 `art/manifest.mjs` 里加一条立绘和一条 CG，在 `src/game/data/characters.ts` 里加角色数据，再在 `src/story/scenes/` 里补上招募剧情和羁绊剧情。`npm test` 会检查剧情是否齐全。
+所有图片共用同一组画师串和负面词，并按类型固定尺寸：立绘为 832×1216 透明背景，背景和 CG 为 1472×832。新增角色时，在 `art/manifest.mjs` 里加立绘和 CG，在 `src/content/characters/` 里加一个角色文件，再在 `src/content/scenes/` 里补上招募剧情和羁绊剧情。`npm test` 会检查剧情能否解析、字段是否完整，以及引用的背景、CG 和立绘是否登记在美术清单里。
