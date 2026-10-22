@@ -1,17 +1,19 @@
 // 美术资源清单。所有图片共用同一组画师串、质量词和负面词，按类型固定画布尺寸，
 // 保证画风和大小统一。改提示词后删除对应 PNG 再运行 `npm run art` 即可重新生成。
 
-// 硬核基调：灰调、强明暗对比、胶片颗粒的电影感画风（novalai 技能画师串 00000071）。
-const ARTIST = "{{yoneyama mai}}, {rella}, {reoen, xilmo}, year 2024, {{{reverse:1999}}}, grey theme";
+// 画风：厚涂插画（novalai 技能画师串 00000043），加灰调与电影感光影。
+const ARTIST = "{swav}, minaba hideo, grey theme";
 const LIGHTING = "cinematic lighting, dramatic lighting, high contrast, rim lighting, film grain";
 const QUALITY = "very aesthetic, masterpiece, no text";
 
 const NEGATIVE =
-  "nsfw, revealing clothes, cleavage, cleavage cutout, underboob, sideboob, covered nipples, cameltoe, highleg, " +
+  "nsfw, revealing clothes, cleavage, cleavage cutout, underboob, sideboob, highleg, " +
+  // 紧身衣容易透出身体轮廓，这几项加重权重。
+  "{{{covered nipples}}}, {{{nipples}}}, {{{cameltoe}}}, " +
   "lowres, artistic error, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, " +
   "chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, " +
   "blank page, @_@, mismatched pupils, glowing eyes, bad anatomy, text, signature, " +
-  // reverse:1999 会往画面里塞Q版小人和挂件。
+  // 避免画面里出现Q版小人和挂件。
   "chibi, doll, stuffed toy, figurine, keychain, mascot";
 
 // 学生和年龄不明的角色：不使用紧身对魔忍服，并压低身材强调。
@@ -53,25 +55,25 @@ const STUDENT_UNIFORM = "taimanin (series), school uniform, blazer, pleated skir
 export const assets = [
   // ---------- 立绘 ----------
   { id: "asagi", kind: "portrait", seed: 20261021, negative: NEGATIVE,
-    subject: `igawa asagi, ${ADULT_SUIT}, purple bodysuit, long sleeves, gloves, scarf, katana at hip, confident smile`,
+    subject: `igawa asagi, black hair, straight hair, ${ADULT_SUIT}, purple bodysuit, long sleeves, gloves, scarf, katana at hip, confident smile`,
     pose: "hand on hip" },
-  { id: "sakura", kind: "portrait", seed: 20261022, negative: ADULT_NEGATIVE,
-    subject: `igawa sakura, ${ADULT_SUIT}, pink hair, short hair, short twintails, pink and black bodysuit, full bodysuit, covered legs, high collar, long sleeves, gloves, cheerful smile, open mouth`,
+  { id: "sakura", kind: "portrait", seed: 20261022, negative: `${ADULT_NEGATIVE}, orange hair, blonde hair, see-through`,
+    subject: `igawa sakura, ${ADULT_SUIT}, {{pink hair}}, short hair, short twintails, black bodysuit, pink trim, full bodysuit, covered legs, high collar, long sleeves, gloves, cheerful smile, open mouth`,
     pose: "waving" },
-  { id: "murasaki", kind: "portrait", seed: 20261023, negative: ADULT_NEGATIVE,
-    subject: `yatsu murasaki, ${ADULT_SUIT}, dark purple hair, long hair, wavy hair, narrow eyes, black and purple bodysuit, full bodysuit, covered legs, high collar, long sleeves, gloves, serious, closed mouth`,
+  { id: "murasaki", kind: "portrait", seed: 20261123, negative: `${ADULT_NEGATIVE}, blue hair, straight hair`,
+    subject: `yatsu murasaki, ${ADULT_SUIT}, {{dark purple hair}}, long hair, {{wavy hair}}, narrow eyes, black and purple bodysuit, full bodysuit, covered legs, high collar, long sleeves, gloves, serious, closed mouth`,
     pose: "arms crossed" },
-  { id: "shiranui", kind: "portrait", seed: 20261024, negative: ADULT_NEGATIVE,
-    subject: `mizuki shiranui, ${ADULT_SUIT}, dark blue hair, hair bun, teal bodysuit, full bodysuit, covered legs, high collar, long sleeves, gloves, gentle smile`,
+  { id: "shiranui", kind: "portrait", seed: 20261124, negative: `${ADULT_NEGATIVE}, red hair, brown hair, purple hair, pink hair`,
+    subject: `mizuki shiranui, ${ADULT_SUIT}, {{{dark blue hair}}}, {black hair}, hair bun, teal bodysuit, full bodysuit, covered legs, high collar, long sleeves, gloves, gentle smile`,
     pose: "hand on own chest" },
   { id: "yukikaze", kind: "portrait", seed: 20261025, negative: STUDENT_NEGATIVE,
     subject: `mizuki yukikaze, ${STUDENT_UNIFORM}, light brown hair, long hair, two side up, tan, smug, grin`,
     pose: "hand on hip" },
-  { id: "rinko", kind: "portrait", seed: 20261026, negative: STUDENT_NEGATIVE,
-    subject: `akiyama rinko, ${STUDENT_UNIFORM}, black hair, long hair, high ponytail, holding sheathed katana, calm, serious`,
+  { id: "rinko", kind: "portrait", seed: 20261126, negative: `${STUDENT_NEGATIVE}, purple hair, blue hair`,
+    subject: `akiyama rinko, ${STUDENT_UNIFORM}, {{{black hair}}}, long hair, high ponytail, holding sheathed katana, calm, serious`,
     pose: "hand on hilt" },
   { id: "asuka", kind: "portrait", seed: 20261027, negative: STUDENT_NEGATIVE,
-    subject: `koukawa asuka, ${STUDENT_UNIFORM}, blonde hair, short hair, fluffy hair, amber eyes, mechanical arms, mechanical legs, energetic, smile, open mouth`,
+    subject: `koukawa asuka, ${STUDENT_UNIFORM}, blonde hair, short hair, fluffy hair, amber eyes, {{mechanical arms}}, {{mechanical legs}}, prosthetic limbs, energetic, smile, open mouth`,
     pose: "clenched hand" },
   { id: "kurenai", kind: "portrait", seed: 20261028, negative: `${STUDENT_NEGATIVE}, school uniform`,
     subject: "shinganji kurenai, taimanin (series), white hair, very long hair, red eyes, pale skin, grey hooded cloak, hood down, two short swords at hip, expressionless",
@@ -102,20 +104,62 @@ export const assets = [
     subject: "1girl, solo, igawa asagi, taimanin (series), mature female, taimanin suit, scarf, katana, standing on rooftop, from side, night, full moon, city lights, wind, floating hair, wide shot" },
   { id: "prologue", kind: "cg", seed: 40261002, negative: NEGATIVE,
     subject: "1girl, solo, igawa asagi, taimanin (series), mature female, business suit, black jacket, pencil skirt, school gate, cherry blossoms, petals, reaching towards viewer, smile, day" },
-  { id: "cg_asagi", kind: "cg", seed: 40261003, negative: `${NEGATIVE}, ${NO_CITY}`,
-    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, long hair, white shirt, office, standing by window, night, holding cup, tea, looking outside, soft smile, mountains, small town lights" },
   { id: "cg_sakura", kind: "cg", seed: 40261004, negative: `${NEGATIVE}, orange hair, blonde hair`,
-    subject: "1girl, solo, igawa sakura, taimanin (series), mature female, {{pink hair}}, short twintails, yukata, summer festival, fireworks, night, holding cotton candy, laughing, lanterns" },
+    subject: "1girl, solo, igawa sakura, taimanin (series), mature female, {{{pink hair}}}, short twintails, yukata, summer festival, fireworks, night, holding cotton candy, laughing, lanterns" },
   { id: "cg_murasaki", kind: "cg", seed: 40261005, negative: NEGATIVE,
     subject: "1girl, solo, yatsu murasaki, taimanin (series), mature female, dark purple hair, long hair, wavy hair, track jacket, dojo, dawn, fighting stance, focused, sweat, sunlight" },
-  { id: "cg_shiranui", kind: "cg", seed: 40261006, negative: NEGATIVE,
-    subject: "1girl, solo, mizuki shiranui, taimanin (series), mature female, dark blue hair, hair bun, sweater, apron, kitchen, cooking, holding ladle, warm smile, looking at viewer, evening" },
+  { id: "cg_shiranui", kind: "cg", seed: 40261006, negative: `${NEGATIVE}, red hair, brown hair`,
+    subject: "1girl, solo, mizuki shiranui, taimanin (series), mature female, {{dark blue hair}}, hair bun, sweater, apron, kitchen, cooking, holding ladle, warm smile, looking at viewer, evening" },
   { id: "cg_yukikaze", kind: "cg", seed: 40261007, negative: `${STUDENT_NEGATIVE}, ${NO_CITY}`,
     subject: "1girl, solo, mizuki yukikaze, taimanin (series), school uniform, light brown hair, two side up, tan, school rooftop, sunset, mountains, wind, looking back, grin, chain-link fence" },
-  { id: "cg_rinko", kind: "cg", seed: 40261008, negative: STUDENT_NEGATIVE,
-    subject: "1girl, solo, akiyama rinko, taimanin (series), school uniform, black hair, high ponytail, cherry blossoms, petals, drawing katana, iaido, serene, courtyard" },
+  { id: "cg_rinko", kind: "cg", seed: 40261008, negative: `${STUDENT_NEGATIVE}, purple hair, blue hair`,
+    subject: "1girl, solo, akiyama rinko, taimanin (series), school uniform, {{black hair}}, high ponytail, cherry blossoms, petals, drawing katana, iaido, serene, courtyard" },
   { id: "cg_asuka", kind: "cg", seed: 40261009, negative: STUDENT_NEGATIVE,
     subject: "1girl, solo, koukawa asuka, taimanin (series), school uniform, blonde hair, short hair, amber eyes, mechanical arms, mechanical legs, workshop, tools, screwdriver, maintenance, grin, sparks" },
   { id: "cg_kurenai", kind: "cg", seed: 40261010, negative: `${STUDENT_NEGATIVE}, school uniform`,
     subject: "1girl, solo, shinganji kurenai, taimanin (series), white hair, very long hair, red eyes, pale skin, grey hooded cloak, hood down, courtyard, night, full moon, sitting on veranda, japanese house, two short swords beside her, contemplative" },
+
+  // ---------- 井河阿莎姬 · 羁绊 2～5 / 秘传 / 营救 ----------
+  { id: "cg_asagi_cell", kind: "cg", seed: 40261138, negative: NEGATIVE,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, sitting in stone cell corner, knee hugged, chain on wrist, iron bars with glowing runes, torn bodysuit, dim green light, damp walls" },
+  { id: "cg_asagi_dojo", kind: "cg", seed: 40261110, negative: NEGATIVE,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, hair tied back, hakama, holding wooden sword, dojo, wooden floor, morning light through paper windows, focused" },
+  { id: "cg_asagi_doorway", kind: "cg", seed: 40261105, negative: NEGATIVE,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, leaning on door frame, one hand on door, half-lit corridor, night, looking back over shoulder, faint smile" },
+  { id: "cg_asagi_guidance", kind: "cg", seed: 40261111, negative: NEGATIVE,
+    subject: "1girl, igawa asagi, taimanin (series), mature female, black hair, hair tied back, standing behind viewer, hand on viewer's shoulder, correcting stance, dojo, morning, close, soft light" },
+  { id: "cg_asagi_hikari", kind: "cg", seed: 40261118, negative: NEGATIVE,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, mid slash, huge crescent energy wave, blue purple light, dojo wall cut open, dust, motion blur, dramatic" },
+  { id: "cg_asagi_infirmary", kind: "cg", seed: 40261121, negative: NEGATIVE,
+    subject: "1girl, igawa asagi, taimanin (series), mature female, black hair, straight hair, lying in infirmary bed, white blanket, red marks on wrists, pink haired girl holding her hand, night, warm lamp, tears" },
+  { id: "cg_asagi_late_night", kind: "cg", seed: 40261101, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, white shirt, office, night, desk lamp, sitting at desk, signing documents, tired, hand on forehead, tea cup, mountains out of window, low light" },
+  { id: "cg_asagi_memorial", kind: "cg", seed: 40261106, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, plain kimono, kneeling, memorial room, stone walls, white candles, thick name register, low candle light, solemn" },
+  { id: "cg_asagi_rain", kind: "cg", seed: 40261113, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, wet hair, white shirt, wet shoulders, standing at rainy window, rain drops on glass, night, dim room, tired" },
+  { id: "cg_asagi_register", kind: "cg", seed: 40261107, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "no humans, thick old name register open on wooden desk, blank last page, small printed line at bottom, pen resting on paper, dawn light, office, dust in air, still life" },
+  { id: "cg_asagi_rescue", kind: "cg", seed: 40261220, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "2girls, yatsu murasaki, {{dark purple hair}}, long wavy hair, black and purple bodysuit, standing, princess carry, carrying igawa asagi in her arms, igawa asagi, black hair, straight hair, purple bodysuit, unconscious, eyes closed, limp, broken chain on wrist, elevator platform, underground, purple light" },
+  { id: "cg_asagi_sake", kind: "cg", seed: 40261114, negative: NEGATIVE,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, kneeling, pouring sake, white porcelain flask, two cups, low table, night, warm lamp, faint smile" },
+  { id: "cg_asagi_sakura_walk", kind: "cg", seed: 40261108, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, dark coat, walking on cherry blossom avenue, cherry trees in bloom, petals on ground and on shoulders, dusk, mountains, looking back, calm expression" },
+  { id: "cg_asagi_scar", kind: "cg", seed: 40261102, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, close-up on bare forearm, rolled up sleeve, old scar, pale skin, office, night, warm lamp light, gentle expression" },
+  { id: "cg_asagi_scroll", kind: "cg", seed: 40261116, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "no humans, old japanese scroll unrolled on wooden desk, dense brush calligraphy, red seal, katana in black scabbard beside it, morning light, office, dust in air, still life" },
+  { id: "cg_asagi_shoulder", kind: "cg", seed: 40261115, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "1girl, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, eyes closed, head resting on viewer's shoulder, office, night, empty sake cup, blanket, peaceful" },
+  { id: "cg_asagi_smile", kind: "cg", seed: 40261112, negative: NEGATIVE,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, close-up, gentle genuine smile, slightly tired eyes, morning light, shallow depth of field" },
+  { id: "cg_asagi_tea", kind: "cg", seed: 40261103, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, holding tea bowl with both hands, steam, sitting across table, office, night, warm lamp light, soft smile" },
+  { id: "cg_asagi_trial", kind: "cg", seed: 40261217, negative: `${NEGATIVE}, blue hair`,
+    subject: "2girls, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, purple bodysuit, hand on katana hilt, facing yatsu murasaki, {{dark purple hair}}, long wavy hair, black and purple bodysuit, full bodysuit, holding battle axe, ten steps apart, wide shot, dojo, blue purple particles in air, floor cracking, tension" },
+  { id: "cg_asagi_window", kind: "cg", seed: 40261104, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, standing by large window, from behind, looking at town lights below, mountains, night, arms crossed, reflections on glass" },
+  { id: "cg_asagi_winter_walk", kind: "cg", seed: 40261109, negative: `${NEGATIVE}, ${NO_CITY}`,
+    subject: "1girl, solo, igawa asagi, taimanin (series), mature female, black hair, straight hair, long hair, winter coat, walking on cherry tree avenue, bare branches, thin snow on branches and ground, winter dusk, mountains, looking back, calm expression" },
 ];
