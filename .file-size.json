@@ -1,0 +1,25 @@
+{
+  "max_tokens": 5000,
+  "exclude": [
+    "**/*.lock",
+    "**/package-lock.json",
+    "**/pnpm-lock.yaml",
+    "**/go.sum",
+    "**/*.min.js",
+    "**/*.min.css",
+    "**/*.map",
+    "**/*.generated.*",
+    "**/__generated__/**",
+    "**/__snapshots__/**",
+    "**/vendor/**",
+    "**/third_party/**",
+    "**/*.svg",
+    "docs/**",
+    "src/content/scenes/**",
+    "art/manifest.mjs"
+  ],
+  "exceptions": {},
+  "baseline": {
+    "src/styles/global.css": 10036
+  }
+}
